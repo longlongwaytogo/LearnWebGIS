@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+       
+
+        <title>移动端-一个全屏的Leaflet地图</title>
+        <link rel="stylesheet" href="./static/css/leaflet.css">
+        <script src="./static/js/leaflet.js"></script>
+ 		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+			
+    	<style>
+			* {
+			padding:0;
+			margin:0;
+			}
+            html,body,#map-container {
+                width:100%;
+                height:98%;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div>
+            <p style="color:rgb(238, 132, 11)">
+                    移动端-一个全屏的Leaflet地图 
+            </p>
+            
+            
+        </div>
+
+         <div id="map-container"></div>
+
+         <div>
+            <p>
+                <a href="https://malagis.com/leaflet-note-1-easy-start.html"> 感谢作者的分享,这个是原作者教程连接</a>
+            </p>    
+         </div>
+    
+        <script>
+            var m = L.map('map-container').fitWorld();
+            var tileAddress = 'https://api.mapbox.com/styles/v1/yqcim/';  
+            tileAddress += 'cizh1ma3400ez2so5x1anhuzo/tiles/256/{z}/{x}/{y}'; 
+            tileAddress += '?access_token=pk.eyJ1IjoieXFjaW0iLCJhIjoiY2l6ZmhnZjEx'; 
+            tileAddress += 'MDBhajJ4cGxnNGN5MnhpdCJ9.pcZtdfk8mSFboCdwqkvW6g';
+
+            var attribution = 'Map data &copy; <a href="http://openstreetmap.org">';
+            attribution += 'OpenStreetMap</a> contributors, '
+            attribution += '<a href="http://creativecommons.org/licenses/by-sa/2.0/">';
+            attribution += 'CC-BY-SA</a>, ';
+            attribution += 'Imagery © <a href="http:/mapbox.com"Mapbox</a>';
+
+            L.tileLayer(tileAddress, {
+                maxZoom :18,
+                attribution: attribution,
+                id: 'mapbox.streets'
+            }).addTo(m);
+      
+        </script>
+
+</body>
+
+
+
+
+</html>
