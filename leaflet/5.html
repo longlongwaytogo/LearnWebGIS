@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- link css-->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+            integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+            crossorigin=""/>
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+            integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+            crossorigin=""></script>
+        <style>
+            #mapid { height: 580px; }
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <p> <a href="https://leafletjs.com/examples/quick-start/">这个是leaflet官方的Guide</a> </p>
+        </div>
+        <div id="mapid"></div>
+
+        <script>
+           // create map instance
+           var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+          // add layer
+          var token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+          var tileAddress = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?' +
+          'access_token=' + token ;
+    
+          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token, {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: token
+        }).addTo(mymap);
+
+        // add maerker 
+        var marker = L.marker([51.5, -0.09]).addTo(mymap);
+
+        // add circle
+        var circle = L.circle([51.508,-0.11],{
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius:500
+        }).addTo(mymap);
+
+        // add polygon
+        var polygon = L.polygon([
+            [51.509, -0.08],
+            [51.503, -0.06],
+            [51.51, -0.047]
+        ]).addTo(mymap);
+
+        // add popup
+        marker.bindPopup("<b>Hello World! <br> I am a popup.").addTo(mymap);
+        circle.bindPopup("I am a circle.");
+        polygon.bindPopup("I am a polygon.");
+
+        // add popup alone
+        var popup = L.popup();
+        popup.setLatLng([51.5,-0.09]).setContent("I am standalone popup.").openOn(mymap);
+    
+
+        </script>
+    </body>
+</html>

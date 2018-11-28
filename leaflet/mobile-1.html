@@ -28,26 +28,30 @@
            
 		   function loaddemo(){
 				if(navigator.geolocation){
-					alert('浏览器支持html5 geolocation');
+                    alert('浏览器支持html5 geolocation');
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                   alert("lat:" + position.coords.latitude +",lon:"+ position.coords.longitude);
+                    });
 				}else{
 					alert('浏览器不支持html5 geolocation');
 				}
 			}
 			 loaddemo();
-		
+
             // Geolocation
             m.locate({
                setView:true,
                maxZoom:7
             });  
                    
-            m.on('locationfund',function(e){
+            m.on('locationfound',function(e){
                 var radius = e.eccuracy/2;
                 L.marker(e.lalng).addTo(m).bindPopup("你就在这个圈内");
                 L.circle(e.lalng,radius).addTo(m);
             });
              m.on('locationerror', function(e) {
              console.log('定位出错=====>', e);
+             alert("定位出错:" + e);
             });
 
         </script>

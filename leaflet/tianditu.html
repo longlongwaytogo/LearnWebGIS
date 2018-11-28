@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./static/css/leaflet.css" />
+        <script src ="./static/js/leaflet.js"></script>
+        <script src="./../js/comm.js"></script>
+        <script src="./../js/proj4-compressed.js"></script>
+        <script src="./../js/proj4leaflet.js"></script>
+    </head>
+
+    
+    <body style="overflow: hidden">
+        <div>
+            <p> leaflet使用天地数据<a href="https://blog.csdn.net/aliasone/article/details/80355184">参考博客</a></p>
+        </div>
+
+        <div id="map" style="height:800px;width: 1300px;float: left"></div>
+        
+        <div style="width: 20px;height: 100px;float: left"></div>
+
+        <script>
+        
+        const resolutions = [
+        156367.7919628329
+        ,78183.89598141646
+        ,39091.94799070823
+        ,19545.973995354114
+        ,9772.986997677057
+        ,4886.4934988385285
+        ,2443.2467494192642
+        ,1221.6233747096321
+        ,610.8116873548161
+        ,305.40584367740803
+        ,152.70292183870401
+        ,76.35146091935201
+        ,38.175730459676004
+        ,19.087865229838002
+        ,9.543932614919001
+        ,4.7719663074595005
+        ,2.3859831537297502
+        ,1.1929915768648751
+        ,0.5964957884324376
+        ,0.2982478942162188
+    ];  // 0 19
+ 
+    const CRS_4549 = new L.Proj.CRS('EPSG:4549',
+        '+proj=tmerc +lat_0=0 +lon_0=120 +k=1 +x_0=500000 +y_0=0 +ellps=GRS80 +units=m +no_defs',
+        {
+            resolutions: resolutions
+        }
+    );
+ 
+    // 经纬度单位，注意纬度在前
+    let center = [31.3456789123, 121.789876543];
+    // 地图对象
+    const map = L.map('map', {
+        center: center,
+        zoom: 6,
+        crs: CRS_4549  // 定义的坐标系
+    });
+ 
+    // 服务是2000坐标系
+    L.tileLayer.wms("http://gisserver.tianditu.com/TDTService/ew/2014/wms",{
+        layers: '060601',  // 资源名称
+        format: 'image/png',
+         transparent : true
+     }).addTo(map);
+ 
+    // 画一个圆
+    L.circle(center, {radius: 100000}).addTo(map);
+ 
+    // 地理点单位转化
+    let center_latLng = L.latLng(center);
+ 
+    // 转平面坐标描述的点
+    let center_latLng_project = CRS_4549.project(center_latLng);
+    // 输出只：L.Point {x: 670333.9079398193, y: 3470684.886947584}
+    console.log(center_latLng_project);
+ 
+    // 转经纬度描述的点
+    let center_latLng_project_unproject = CRS_4549.unproject(center_latLng_project);
+    // 输出值：L.LatLng {lat: 31.345678912291856, lng: 121.78987654308136}
+    console.log(center_latLng_project_unproject);
+ 
+    // 渲染geojson,投影坐标描述
+    let geojson = {
+        "type":"FeatureCollection",
+        "features":[
+            {
+                "type":"Feature",
+                "id":"polygon.1",
+                "geometry":{
+                    "type":"MultiPolygon",
+                    "coordinates":[
+                        [[
+                            [550333.9079398193,3470684.886947584],
+                            [460333.9079398193,3070684.886947584],
+                            [348333.9079398193,2970684.886947584],
+                            [550333.9079398193,3470684.886947584]]
+                        ]]
+                },
+                "properties":{"name": "rect"}
+            }
+        ],
+        "crs":{
+            "type":"name",
+            "properties":{"name":"EPSG:4549"}   // EPSG:4549
+        }
+    };
+ 
+    // L.Proj.GeoJSON继承于L.GeoJSON，可调样式
+    L.Proj.geoJson(geojson,{
+        style: {
+            "color": "#ff0000",
+            "weight": 5,
+            "opacity": 0.65
+        }
+    }).addTo(map);
+
+
+
+        </script>
+    </body>
+</html>
