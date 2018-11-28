@@ -1,8 +1,10 @@
-<!-- <!DOCTYPE html> --> <!-- 使用DOCTYPE html 标记，Iframe大小显示不正常，显示过小-->
+<!-- <!DOCTYPE html> --> <!-- 使用DOCTYPE html 标记，Iframe大小显示不正常，显示过小;现在已经解决，通过js函数自适应处理高度-->
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	
 		<style>
 		
 		 a.right{
@@ -11,14 +13,12 @@
 			color:chocolate;
 			} 
 		</style>
+		<script src="js/comm.js" ></script>
 		 <script >
-                function loadSub(file) {
-                    var frame = document.getElementById("showWindow");
-                    frame.src=file;
-                }
+                // window.onresize=function(){  
+                //     changeFrameHeight('showWindow',75);  
+				// } 
             </script>
-
-
 	</head>
 	<body>
 		<div>
@@ -28,13 +28,14 @@
 
 		<div >
 			<ul>
-				<li><a  onclick='loadSub("leaflet/leafletjs.html")'>移动端-一个全屏的Leaflet地图</a> </li>
+				<!--a标记没有href 属性，显示的文字不会出现高亮效果，可以添加#做特殊处理，并执行onclick事件-->
+				<li><a href="#" onclick=' frameLoadSub2("showWindow","leaflet/leafletjs.html",75)'>Leaflet地图</a> </li>
 			</ul>
 		</div>
 		<div>
-			<iframe id="showWindow"  frameborder="1" width="100%" height ="96%" ></iframe>
+			<iframe id="showWindow"  frameborder="0" width="100%" height ="96%"
+			sandbox="allow-same-origin allow-scripts allow-top-navigation" ></iframe>
+			<!-- onload='changeFrameHeight("showWindow",75)'  -->
 		</div>
-
 	</body>
-	
 </html>

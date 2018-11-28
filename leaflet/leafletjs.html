@@ -1,15 +1,19 @@
 <!-- <!DOCTYPE html> -->  <!-- 使用DOCTYPE html 标记，Iframe大小显示不正常，显示过小-->
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+        <script src="../js/comm.js"> </script>
         <script >
                 function loadSub(file) {
                     var frame = document.getElementById("showWindow");
                     frame.src=file;
-                    frame.width="100%";
-                    frame.height="100%";
                 }
+
+                window.onresize=function(){  
+                    changeFrameHeight("showWindow",75);  
+                } 
         </script>
         <style type="text/stylesheet">
             #showWindow {
@@ -19,39 +23,16 @@
             }
         </style>
     </head>
-    <body onload="resizeFrame()">
-       
-    
-            <div>
-
-                    <ul>
-                            <!-- <li><a  onclick= 'loadSub(href="./mobile-0.html")'>加载一个全屏的地图</a> </iframe></li> -->
-                            <li><a href="./mobile-0.html" target="showWindow">加载一个全屏地图</a></li>
-                    </ul>
-                        
-            </div>
-                <div>
-                    <!-- <iframe class="showWindow" name="showWindow"> -->
-                            <iframe   class="showWindow" name="showWindow" frameborder="1" width="100%" height ="100%" ></iframe>
-
-                </div>
-      
-      
-        
+    <body >
+        <div>
+                <ul>
+                         <li><a href="#" onclick= 'loadSub(href="./mobile-0.html")'>加载一个全屏的地图</a> </iframe></li>
+                        <!-- <li><a href="./mobile-0.html" target="showWindow">加载一个全屏地图</a></li> -->
+                </ul>
+        </div>
+        <div>
+                <iframe   class="showWindow" id="showWindow" frameborder="1" height ="100%" width="100%"
+                sandbox="allow-same-origin allow-scripts allow-top-navigation" onload='changeFrameHeight("showWindow",75);'  ></iframe>
+        </div>
     </body>
-    <script>
-        function resizeFrame()
-        {
-            // if(window.parent) {  
-            //     alert(window.parent.name);       
-            //      console.log("parent window name:" + window.parent.name);
-            //      window.parent.ducument.getElementById("showWindow").width ="100%";
-            //      window.parent.ducument.getElementById("showWindow").height ="100%";
-               
-            // }
-            // ducument.getElementById("showWindow").width ="100%";
-            // ducument.getElementById("showWindow").height ="100%";
-            // console.log("current window name:" + window.name);
-        }
-    </script>
 </html>
