@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> 添加marker</title>
+        <link rel="stylesheet" href="./static/css/leaflet.css" />
+        <script src ="./static/js/leaflet.js"></script>
+        <script src="./../js/comm.js"></script>
+        <style>
+            #map-container {
+                height:600px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map-container">
+        </div>
+        <script>
+              var tileAddress = 'https://api.mapbox.com/styles/v1/yqcim/';
+                tileAddress += 'cizh1ma3400ez2so5x1anhuzo/tiles/256/{z}/{x}/{y}';
+                tileAddress += '?access_token=pk.eyJ1IjoieXFjaW0iLCJhIjoiY2l6ZmhnZjEx';
+                tileAddress += 'MDBhajJ4cGxnNGN5MnhpdCJ9.pcZtdfk8mSFboCdwqkvW6g';
+    
+            var m = L.map('map-container').setView([34.2714039,108.9570859],7);
+            L.tileLayer(tileAddress,{
+                maxZoom:18,
+                attribution:getAttribution(),
+                id:'mapbox.strees'
+            }).addTo(m);
+
+        // add a marker
+        //var marker = L.marker([36.52,120.31]).addTo(m);    
+        // 从百度获取的经纬度信息，顺序竟然反了，郁闷。
+        var marker = L.marker([34.287682,108.9406]).addTo(m);    
+  
+        // add acircle 
+        var circle = L.circle([34.287682,108.9406],{
+            color: 'green',
+            fillColor:'#f03',
+            radius: 10000
+        }).addTo(m);
+        
+        // use event
+        var myPop = L.popup();
+        m.on('click',function(e){
+            var content = '你点击了这里：<br>';
+            content += e.latlng.toString();
+            myPop.setLatLng(e.latlng).setContent(content).openOn(m);
+        });
+        
+        // marker click event
+        marker.on('click',function(e) {
+            console.log(e);
+            alert('我是Marker');
+        })
+    
+        </script>
+    </body>
+</html>

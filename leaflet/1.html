@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="UTF-8">
+            <title> 最简单的LeafLetjs</title>
+            <link rel="stylesheet" href="./static/css/leaflet.css" >
+            <script src="./static/js/leaflet.js"></script>
+            <script src="./../js/comm.js"></script>
+            <style>
+                #map-container {
+                    width: 600px;
+                    height: 400px;
+                }
+            </style>
+    </head>
+    <body>
+        <div id="map-container"></div>
+        <script>
+        // initialize the map on the "map" div with a given center and zoom
+        // var map = L.map('map', {
+        // 	center: [51.505, -0.09],
+        // 	zoom: 13
+        // });
+           var m = L.map('map-container').setView([34.2714039,108.9570859],7);
+            L.tileLayer(getTileAddress(),{
+            maxZoom:18,
+            attribution: getAttribution(),
+            id: 'mapbox.streets'
+        }).addTo(m);
+
+        </script>
+    </body>
+</html>

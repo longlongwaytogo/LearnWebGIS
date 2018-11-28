@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+            <title>移动端全屏定位演示</title>
+            <link rel="stylesheet" href="./static/css/leaflet.css">
+            <script src="./static/js/leaflet.js"></script>
+            <script src="./../js/comm.js"></script>
+            <style>
+                * {
+                    padding:0;
+                    margin:0;
+                }
+                html,body,#map-container {
+                    width:100%;
+                    height:100%;
+                }
+            </style>
+    </head>
+    <body>
+        <div id="map-container"></div>
+        <script>
+            // 创建map
+            var m = L.map('map-container').fitWorld();
+            // 设置授权
+            setAuthorization(L,m);
+           
+		   function loaddemo(){
+				if(navigator.geolocation){
+					alert('浏览器支持html5 geolocation');
+				}else{
+					alert('浏览器不支持html5 geolocation');
+				}
+			}
+			 loaddemo();
+		
+            // Geolocation
+            m.locate({
+               setView:true,
+               maxZoom:7
+            });  
+                   
+            m.on('locationfund',function(e){
+                var radius = e.eccuracy/2;
+                L.marker(e.lalng).addTo(m).bindPopup("你就在这个圈内");
+                L.circle(e.lalng,radius).addTo(m);
+            });
+             m.on('locationerror', function(e) {
+             console.log('定位出错=====>', e);
+            });
+
+        </script>
+    </body>
+</html>

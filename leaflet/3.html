@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> 添加marker</title>
+        <link rel="stylesheet" href="./static/css/leaflet.css" />
+        <script src ="./static/js/leaflet.js"></script>
+        <script src="./../js/comm.js"></script>
+        <style>
+            #map-container {
+                height:600px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map-container">
+        </div>
+        <script>
+            var m = L.map('map-container').setView([34.2714039,108.9570859],7);
+            L.tileLayer('https://api.mapbox.com/styles/v1/yqcim/cizh1ma3400ez2so5x1anhuzo/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoieXFjaW0iLCJhIjoiY2l6ZmhnZjExMDBhajJ4cGxnNGN5MnhpdCJ9.pcZtdfk8mSFboCdwqkvW6g',{
+                maxZoom:18,
+                attribution:getAttribution(),
+                id:'mapbox.strees'
+            }).addTo(m);
+
+        // add a marker
+        //var marker = L.marker([36.52,120.31]).addTo(m);    
+        // 从百度获取的经纬度信息，顺序竟然反了，郁闷。
+        var marker = L.marker([34.287682,108.9406]).addTo(m);    
+  
+        // add acircle 
+        var circle = L.circle([34.287682,108.9406],{
+            color: 'green',
+            fillColor:'#f03',
+            radius: 10000
+        }).addTo(m);
+        
+       
+
+        // 绘制多边形
+        var polygon = L.polygon([
+        [34.17546   ,109.4092 ],
+        //[33.453682  ,113.640578 ],
+        [35.299334  ,112.886289 ],
+        [35.615451  ,110.549832 ]
+        ], {
+            color:'green',
+            fillColor: '#f03',
+            fillOpacity: 0.5
+        }).addTo(m);
+
+        // popup
+        marker.bindPopup('这是个Marker').openPopup();
+        circle.bindPopup('我是个圆');
+        polygon.bindPopup('我是多边形');
+
+        // 绘制宝鸡位置
+         // add acircle 
+         var circle2 = L.circle([34.419765,107.238319],{
+            color: 'green',
+            fillColor:'#f03',
+            radius: 5000
+        }).addTo(m);
+        // 单独的Pop窗口
+        var popup = L.popup().setLatLng([34.419765,107.238319]).setContent("宝鸡(单独的一个Popup图层").addTo(m);
+    
+        // 获取经纬度：
+       
+        // try event 
+        m.on('click',function(e){
+            console.log(e);
+      alert('纬度：' + e.latlng.lat + '\n经度：' + e.latlng.lng);
+        });
+ 
+        </script>
+    </body>
+</html>

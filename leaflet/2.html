@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> 使用自定义的MapBox</title>
+        <link rel="stylesheet" href="./static/css/leaflet.css" />
+        <script src ="./static/js/leaflet.js"></script>
+        <script src="./../js/comm.js"></script>
+        <style>
+            #map-container {
+                height:400px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map-container">
+        </div>
+        <script>
+            var m = L.map('map-container').setView([34.2714039,108.9570859],7);
+            L.tileLayer('https://api.mapbox.com/styles/v1/yqcim/cizh1ma3400ez2so5x1anhuzo/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoieXFjaW0iLCJhIjoiY2l6ZmhnZjExMDBhajJ4cGxnNGN5MnhpdCJ9.pcZtdfk8mSFboCdwqkvW6g',{
+                maxZoom:18,
+                attribution:getAttribution(),
+                id:'mapbox.strees'
+            }).addTo(m);
+
+        </script>
+    </body>
+</html>
