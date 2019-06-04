@@ -8,7 +8,7 @@
         <!--Make the application on mobile take up the full browser screen and disable user scaling. -->
         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
         <title> test</title>
-		
+		<script src="./lib/thirdparty/require.min.js" data-main="./lib/main.js" ></script>
 	    <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
         <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 
@@ -24,10 +24,16 @@
         </style>
 	</head>
 	<body>
+      
 		<div id='cesiumContainer' > </div>
 	</body>
 	
-	<script>	
-		var viewer = new Cesium.Viewer('cesiumContainer');
+    <script>
+      function onload()
+        {
+            var viewer = new Cesium.Viewer('cesiumContainer');
+        }
+
+		
 	</script>
 </html>
