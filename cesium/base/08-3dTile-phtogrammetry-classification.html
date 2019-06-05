@@ -1,0 +1,109 @@
+<!DOCTYPE html >
+<html>
+	<head>
+	  <!--user correct character set. -->
+        <meta charset = "utf-8">
+        <!--Tell IE to use the latest, best version. -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--Make the application on mobile take up the full browser screen and disable user scaling. -->
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
+        <title> 3d BIM</title>
+		
+				<script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
+				<link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+				<style>
+                     #toolbar {
+                            display: block;
+                            position: absolute;
+                            top: 5px;
+                            left: 5px;
+                            color:cornsilk;
+                        }
+
+						* {
+							padding:0;
+							margin:0;
+							}
+							
+					html,body, #cesiumContainer {
+										width: 100%; height: 100%; margin:0; padding:0; overflow:hidden;
+								}
+
+									/*取消官方Logo*/
+						.cesium-widget-credits{
+							display: none !important;
+						}
+				</style>
+		</head>
+		<body>
+            <div id='cesiumContainer' > </div>
+            <div id="toolbar">
+                    <input type = 'checkbox' value = 'true' data-bind='checked: useClassificationType, valueUpdate:"input"'> useClassificationType
+            </div>
+		</body>
+		<script> 
+				var viewer = new Cesium.Viewer('cesiumContainer',{
+					animation:false,
+					baseLayerPicker:false,
+					geocoder:false,
+					navigationHelpButton:false,
+					timeline:false,
+                    terrainProvider: Cesium.createWorldTerrain()
+				});
+		
+             
+
+                // A normal b3dm tileset of phtogrammetry
+                var tileset = new Cesium.Cesium3DTileset({
+                    url: Cesium.IonResource.fromAssetId(6074)
+                });
+                viewer.scene.primitives.add(tileset);
+                viewer.zoomTo(tileset);
+               
+               // todo： 比较奇怪，bloom的例子中，也是用http链接，就没提示跨域，此处却提示跨域。。。？
+                var classificationTilesetUrl = 'https://cesiumjs.org/releases/1.57/Apps/SampleData/Cesium3DTiles/Classification/Photogrammetry/tileset.json';
+                //var classificationTilesetUrl = './lib/SampleData/Cesium3Dtiles/Classification/Photogrammetry/tileset.json';
+                // a b3dm tileset used to classify the phtogrammetry tileset
+                var classificationTileset = new Cesium.Cesium3DTileset({
+                    url: classificationTilesetUrl,
+                    classificationType: Cesium.ClassificationType.CESIUM_3D_TILE
+                });
+
+                classificationTileset.style = new Cesium.Cesium3DTileStyle({
+                    color: 'rgba(255,0,0,0.5)'
+                });
+
+                viewer.scene.primitives.add(classificationTileset);
+
+                //the same b3dm tileset used for classification but rendered normally for comparision.
+                // var nonClassificationTileset = new Cesium.Cesium3DTileset({
+                //     url: classificationTilesetUrl,
+                //     show: false
+                // });
+
+                // nonClassificationTileset.style = new Cesium.Cesium3DTileStyle({
+                //     color: 'rgba(255,0,0,0.5)'
+                // });
+                // viewer.scene.primitives.add(nonClassificationTileset);
+
+                // listen box
+
+                var viewModel = {
+                    useClassificationType: true
+                };
+
+                 // Track and create the bindings for the view model
+                var toolbar = document.getElementById('toolbar');
+                Cesium.knockout.track(viewModel);
+                Cesium.knockout.applyBindings(viewModel, toolbar);
+
+                Cesium.knockout.getObservable(viewModel, 'useClassificationType').subscribe(function(newValue) {
+                
+                    classificationTileset.show = newValue;
+                    console.log("useClassificationType:" + newValue);
+                });
+             
+                
+		</script>
+</html>
