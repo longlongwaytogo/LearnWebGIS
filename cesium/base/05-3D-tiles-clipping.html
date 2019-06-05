@@ -68,7 +68,7 @@
 				});
 
                 var scene = viewer.scene;
-                var clipObjects = ['BIM','Point Clond','Instanced','Model'];
+                var clipObjects = ['BIM','Point Cloud','Instanced','Model'];
                 
                 var viewModel = {
                     debugBoundingVolumesEnabled: false,
@@ -120,13 +120,13 @@
                     return function() {
                         plane.distance = targetY;
                         return plane;
-                    }
+                    };
                 }
 		
                 var tileset;
                 function loadTileset(url) {
                     clippingPlanes = new Cesium.ClippingPlaneCollection({
-                        panes: [
+                        planes: [
                             new Cesium.ClippingPlane(new Cesium.Cartesian3(0.0,0.0, -1.0),0.0)
                         ],
                         edgeWidth: viewModel.edgeStylingEnabled? 1.0: 0.0
@@ -138,7 +138,7 @@
                         clippingPlanes : clippingPlanes
                     }));
 
-                    tileset.debugShowBoundingVolume = viewModel.debugBoundingVolumeEnabled;
+                    tileset.debugShowBoundingVolume = viewModel.debugBoundingVolumesEnabled;
                     return tileset.readyPromise.then(function(){
                         var boundingSphere = tileset.boundingSphere;
                         var radius = boundingSphere.radius;
