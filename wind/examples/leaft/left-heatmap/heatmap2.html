@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+   crossorigin=""/>
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+   crossorigin=""></script>
+
+     <!-- Load Esri Leaflet from CDN -->
+     <!-- <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+     <script src="https://unpkg.com/esri-leaflet-vector@4.1.0/dist/esri-leaflet-vector.js"></script> -->
+     <script src="js/heatmap.min.js"></script>
+     <script src="js/leaflet-heatmap.js"></script>
+     <style>
+        html, body, #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+          }
+      </style>
+    </head>
+
+    <body>
+    
+        <div id="map"></div>
+
+        <script>
+        
+        // 加载地图服务
+//    L.tileLayer('https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}', {
+//             format: 'image/png',
+//             transparent: true
+//         }).addTo(mymap);
+    
+//数据
+    var testData = {
+				max: 108,
+				data: [
+				    {
+						lat: 39.62117439,
+						lng: 121.9936396,
+						value:98
+					},
+					{
+						lat: 39.61809405,
+						lng: 121.9918268,
+						value:70
+					},
+					{
+						lat: 39.62066229,
+						lng: 121.9944071,
+						value:88
+					},
+					{
+						lat: 39.62037488,
+						lng: 121.9908595,
+						value:77
+					},
+					{
+						lat: 39.61839083,
+						lng: 121.9893449,
+						value:98
+					},
+					{
+						lat: 39.61808874,
+						lng: 121.9888359,
+						value:89
+					},
+					{
+						lat: 39.61929969,
+						lng: 121.9927034,
+						value:76
+					},
+
+					{
+						lat: 39.6193,
+						lng: 121.9926137,
+						value:45
+					},
+					{
+						lat: 39.62334245,
+						lng: 121.9935193,
+						value:23
+					},
+					{
+						lat: 39.623184,
+						lng: 121.9931208,
+						value:44
+					},
+					{
+						lat: 39.62208411,
+						lng: 121.99343,
+						value:34
+					},
+					{
+						lat: 39.62305201,
+						lng: 121.9937288,
+						value:77
+					},
+					{
+						lat: 39.62353145,
+						lng: 121.9937485,
+						value:99
+					},
+					{
+						lat: 39.62009813,
+						lng: 121.9929025,
+						value:66
+					}
+				]
+			};
+
+            var cfg={
+                "radius": 0.0009,
+                "maxOpacity": 0.4,
+                "scaleRadius": true,
+                "useLocalExtrema": true,
+                latField: 'lat',
+                lngField: 'lng',
+                valueField: 'value'
+
+            };
+            var heatmapLayer = new HeatmapOverlay(cfg);
+
+            var baseLayer = L.tileLayer(
+                'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}', {
+					attribution: '...',
+					maxZoom: 21
+                }
+            );
+
+
+			//gross:生成数据量
+//radius:每个点的范围
+function createData(gross,radius){
+    var max = 0;                    //单点最大值
+    var points=[];                  //点集合
+    for(;gross>0;gross--){
+        var val = Math.floor(Math.random()*100);
+        max = Math.max(max, val);
+        var point = {
+            "lat":Math.random()*2.5+39,     //经度
+            "lng":Math.random()*2.5+115,        //纬度
+            "count": val,           //数据量大小
+            "radius":radius
+        };
+        points.push(point);
+    }
+    return {"max":max,"data":points};
+}
+
+
+
+var data=createData(10000,0.015);
+    var heatmap_cfg={
+        "radius":"radius",          //设置每一个热力点的半径
+        "maxOpacity":0.5,           //设置最大的不透明度
+        "minOpacity":0.3,           //设置最小的不透明度
+        "scaleRadius":true,         //设置热力点是否平滑过渡
+        "blur": 0.95,               //系数越高，渐变越平滑，默认是0.85,
+                                    //滤镜系数将应用于所有热点数据。
+        "useLocalExtrema": true,    //使用局部极值
+        "latField":"lat",           //纬度
+        "lngField":"lng",           //经度
+        "valueField":"value",       //热力点的值
+        "gradient": {   "0.99": "rgba(255,0,0,1)",
+                        "0.9": "rgba(255,255,0,1)",
+                        "0.8": "rgba(0,255,0,1)",
+                        "0.5": "rgba(0,255,255,1)",
+                        "0": "rgba(0,0,255,1)"
+                    }
+    }
+    var heatmap_layer = new HeatmapOverlay(heatmap_cfg);
+    var leaflet_layer = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
+    var leaflet_cfg={
+        "center":L.latLng(39.9,116.36),             //维度精度
+        "zoom": 10,                                 //默认缩放级别
+        "minZoom":9,                                //最小缩放级别
+        "maxZoom":16,                               //最大缩放级别
+        "layers":[baseLayer, heatmap_layer],    //定义地图图层
+        "maxBounds":[[39,115],[41.5,117.5]],        //维度精度
+        "opacity": 0.1                              //图层的不透明度
+    }
+    var map = new L.Map("map",leaflet_cfg);
+    heatmap_layer.setData(data);
+ 
+
+ 
+        //     var map = new L.Map('map',{
+        //     center: new L.LatLng(39.6235145,121.9937485),
+        //     zoom: 15,
+        //     layers: [baseLayer]
+        // });
+
+        //heatmapLayer.setData(testData);
+     </script>
+    </body>
+
+
+</html>

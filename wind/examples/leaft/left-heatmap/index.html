@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+   crossorigin=""/>
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+   crossorigin=""></script>
+
+     <!-- Load Esri Leaflet from CDN -->
+     <!-- <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+     <script src="https://unpkg.com/esri-leaflet-vector@4.1.0/dist/esri-leaflet-vector.js"></script> -->
+     <script src="js/heatmap.min.js"></script>
+     <script src="js/leaflet-heatmap.js"></script>
+     <style>
+        html, body, #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+          }
+      </style>
+    </head>
+
+    <body>
+    
+        <div id="map"></div>
+
+        <script>
+        
+        // 加载地图服务
+//    L.tileLayer('https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}', {
+//             format: 'image/png',
+//             transparent: true
+//         }).addTo(mymap);
+    
+//数据
+    var testData = {
+				max: 108,
+				data: [
+				    {
+						lat: 39.62117439,
+						lng: 121.9936396,
+						value:98
+					},
+					{
+						lat: 39.61809405,
+						lng: 121.9918268,
+						value:70
+					},
+					{
+						lat: 39.62066229,
+						lng: 121.9944071,
+						value:88
+					},
+					{
+						lat: 39.62037488,
+						lng: 121.9908595,
+						value:77
+					},
+					{
+						lat: 39.61839083,
+						lng: 121.9893449,
+						value:98
+					},
+					{
+						lat: 39.61808874,
+						lng: 121.9888359,
+						value:89
+					},
+					{
+						lat: 39.61929969,
+						lng: 121.9927034,
+						value:76
+					},
+
+					{
+						lat: 39.6193,
+						lng: 121.9926137,
+						value:45
+					},
+					{
+						lat: 39.62334245,
+						lng: 121.9935193,
+						value:23
+					},
+					{
+						lat: 39.623184,
+						lng: 121.9931208,
+						value:44
+					},
+					{
+						lat: 39.62208411,
+						lng: 121.99343,
+						value:34
+					},
+					{
+						lat: 39.62305201,
+						lng: 121.9937288,
+						value:77
+					},
+					{
+						lat: 39.62353145,
+						lng: 121.9937485,
+						value:99
+					},
+					{
+						lat: 39.62009813,
+						lng: 121.9929025,
+						value:66
+					}
+				]
+			};
+
+            var cfg={
+                "radius": 0.0009,
+                "maxOpacity": 0.4,
+                "scaleRadius": true,
+                "useLocalExtrema": true,
+                latField: 'lat',
+                lngField: 'lng',
+                valueField: 'value'
+
+            };
+            var heatmapLayer = new HeatmapOverlay(cfg);
+
+            var baseLayer = L.tileLayer(
+                'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}', {
+					attribution: '...',
+					maxZoom: 21
+                }
+            );
+
+            var map = new L.Map('map',{
+            center: new L.LatLng(39.6235145,121.9937485),
+            zoom: 15,
+            layers: [baseLayer]
+        });
+
+        //heatmapLayer.setData(testData);
+     </script>
+    </body>
+
+
+</html>
